@@ -1,29 +1,32 @@
-name: Deploy Hugo site to GitHub Pages
+name: Deploy Hugo Site
 
 on:
   push:
-    branches:
-      - main  # 👈 每次推送到 main 分支就会自动部署
+    branches: [ main ]
 
 jobs:
-  build:
+  build-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332  # v4.1.7 SHA
 
       - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
+        uses: peaceiris/actions-hugo@5b3dd5e5c2e8f3a4b5c6d7e8f9a0b1c2d3e4f5a6b  # 替换为 v2 的最新 SHA
         with:
-          hugo-version: 'latest'
+          hugo-version: '0.150.0'  # 使用最新 Hugo 版本，视需要调整
           extended: true
 
-      - name: Build Hugo site
+      - name: Build Hugo Site
         run: hugo --minify
 
-      - name: Deploy to GitHub Pages 🚀
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@7c5a4b3e2d1c0f9e8d7c6b5a4e3d2c1b0a9f8e7d6c  # 替换为 v3 的最新 SHA
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
